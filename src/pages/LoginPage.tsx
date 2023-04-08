@@ -42,7 +42,10 @@ const LoginPage: FC = () => {
         <Page>
             <Background>
                 <div className="absolute w-full h-full">
-                    <Picture src="src/assets/hook.png" className={`container w-full h-full m-auto ${beginEffect} ${moveToEffect}`.trimEnd()} />
+                    <Picture
+                        src="src/assets/hook.png"
+                        className={`container w-full h-full m-auto ${beginEffect} ${moveToEffect}`.trimEnd()}
+                    />
                 </div>
                 <Form
                     className="relative z-10"
@@ -51,6 +54,7 @@ const LoginPage: FC = () => {
                     moveToLabel={formData[formName].moveToLabel}
                     moveToClick={moveToClick}
                     exeLabel={formData[formName].exeLabel}
+                    isRedirectExe={formName === 'login'}
                 >
                     {formName === 'login'
                         ? (

@@ -15,6 +15,7 @@ type Props = {
     exeLabel?: string
     exeClick?(): void;
     exeSubmit?(): void;
+    isRedirectExe?: boolean;
 };
 
 const Form: FC<PropsWithChildren<Props>> = (props) => {
@@ -28,6 +29,7 @@ const Form: FC<PropsWithChildren<Props>> = (props) => {
         exeLabel = '',
         exeClick,
         exeSubmit,
+        isRedirectExe = false,
         children,
     } = props;
 
@@ -47,9 +49,14 @@ const Form: FC<PropsWithChildren<Props>> = (props) => {
                     {moveToLabel}
                 </Button>   
             </Column>
-            <Link href='/home'>
-                <Button onClick={exeClick} onSubmit={exeSubmit}>{exeLabel}</Button>
-            </Link>
+            {isRedirectExe
+            ? (
+                <Link href='/home'>
+                    <Button onClick={exeClick} onSubmit={exeSubmit}>{exeLabel}</Button>
+                </Link>
+            )
+            : <Button onClick={exeClick} onSubmit={exeSubmit}>{exeLabel}</Button>
+            }
         </form>
     );
 }
