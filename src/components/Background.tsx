@@ -6,7 +6,7 @@ const Background: FC<PropsWithChildren> = (props) => {
     const { children } = props;
 
     return (
-        <div className="bg-no-repeat bg-cover bg-center w-screen h-screen" style={{ backgroundImage: 'url(src/assets/background.svg)' }} >
+        <div className="bg-no-repeat bg-cover bg-center w-screen h-screen" style={{ backgroundImage: 'url(src/assets/background.png)' }} >
             <div className="flex w-full h-full">
                 {children}
             </div>

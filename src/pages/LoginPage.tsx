@@ -24,7 +24,7 @@ const LoginPage: FC = () => {
             moveToLabel: 'назад',
             exeLabel: 'ПОЗВОНИТЬ',
         },
-    }
+    };
 
     const updateAnimInitor = () => setAnimInitor(uuid());
 
@@ -41,9 +41,12 @@ const LoginPage: FC = () => {
     return (
         <Page>
             <Background>
-                <Picture src="src/assets/hook.png" />
+                <div className="absolute w-full h-full">
+                    <Picture src="src/assets/hook.png" className={`container w-full h-full m-auto ${beginEffect} ${moveToEffect}`.trimEnd()} />
+                </div>
                 <Form
-                    beginEffect={beginEffect}
+                    className="relative z-10"
+                    beginEffect={beginEffect ? beginEffect + ' top-[-80px]' : ''}
                     moveToEffect={moveToEffect}
                     moveToLabel={formData[formName].moveToLabel}
                     moveToClick={moveToClick}
