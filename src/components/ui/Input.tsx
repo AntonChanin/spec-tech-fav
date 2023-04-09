@@ -31,6 +31,7 @@ type Props = {
     label?: string;
     placeholder?: string;
     pattern?: string;
+    value?: string;
     className?: string;
     onChange?(value: string): void;
 };
@@ -41,6 +42,7 @@ const Input: FC<Props> = (props) => {
         label,
         placeholder,
         pattern,
+        value = '',
         className,
         onChange,
     } = props;
@@ -72,6 +74,7 @@ const Input: FC<Props> = (props) => {
                 type={fnType}
                 pattern={pattern}
                 id={chainId}
+                value={value}
                 onFocus={handleFocus}
                 onMouseLeave={handleSelect}
                 onChange={onChange && handleChange}

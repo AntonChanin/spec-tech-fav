@@ -49,7 +49,7 @@ const Form: FC<PropsWithChildren<Props>> = (props) => {
                     {moveToLabel}
                 </Button>   
             </Column>
-            {isRedirectExe
+            {isRedirectExe && exeSubmit
             ? (
                 <Link href='/home'>
                     <Button onClick={exeClick} onSubmit={exeSubmit}>{exeLabel}</Button>
