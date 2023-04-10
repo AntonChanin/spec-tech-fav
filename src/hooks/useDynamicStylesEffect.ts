@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 
-const useDynamicStylesEffect = (name = 'animate-bounce', time = 1550, isActive = true) => {
+const useDynamicStylesEffect = (name = 'animate-bounce', time = 1550, isActive = true, mutate = () => {}) => {
     const [dynamicEffect, setDynamicEffect] = useState(name);
     const [isAdd, setIsAdd] = useState(isActive) 
 
     useEffect(() => {
         if (!isAdd) setIsAdd(true);
+        mutate?.();
         setTimeout(() => {
             setIsAdd(false);
         }, time);

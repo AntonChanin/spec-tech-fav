@@ -6,6 +6,7 @@ import Form from '../components/ui/Form';
 import Input from '../components/ui/Input';
 import Picture from '../components/ui/Picture';
 import useDynamicStylesEffect from '../hooks/useDynamicStylesEffect';
+import useSound from '../hooks/useSound';
 
 const LoginPage: FC = () => {
     localStorage.setItem('target_login', '+7(111)111-11-11');
@@ -17,8 +18,11 @@ const LoginPage: FC = () => {
     const [password, setPassword] = useState(localStorage.getItem('password') ?? '');
     const [showErrorMessage, setShowErrorMessage] = useState(false);
     const [isAdd, setIsAdd] = useState(false);
-    const { current: fallDown } = useDynamicStylesEffect('fall-down');
-    const { update: rotateForm } = useDynamicStylesEffect('rotate-form', 5000);
+
+    const chainSoundEffect = useSound('public/sound/short_chain-sound-effect.wav');
+    const actionSoundEffect = useSound('public/sound/machine-button-being-pressed-sound-effect.mp3');
+    const { current: fallDown } = useDynamicStylesEffect('fall-down', 1550, true, chainSoundEffect);
+    const { update: rotateForm } = useDynamicStylesEffect('rotate-form', 5000, true, actionSoundEffect);
 
     const moveToClick = () => {
         setIsAdd(true);
@@ -28,12 +32,15 @@ const LoginPage: FC = () => {
     };
 
     const handleClick = () => {
+        actionSoundEffect()
         setIsValid(validate());
         if (isValid.common && isValid.truthLogin && isValid.truthPassword) {
             setShowErrorMessage(false);
             localStorage.setItem('password', password);
             localStorage.setItem( 'login', phone);
-            window.location.href = '/';
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 500)
         }  else {
             setShowErrorMessage(true);
         };
@@ -91,7 +98,7 @@ const LoginPage: FC = () => {
             <Background>
                 <div className="absolute w-full h-full">
                     <Picture
-                        src="src/assets/hook_pressed.png"
+                        src="src/assets/hook.png"
                         className={`container w-auto h-auto m-auto ${fallDown()} ${rotateForm(isAdd)}`.trimEnd()}
                     />
                 </div>

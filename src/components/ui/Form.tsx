@@ -31,7 +31,7 @@ const Form: FC<PropsWithChildren<Props>> = (props) => {
 
     return (
         <form
-            className={`bg-white m-auto rounded-[1.25rem] shadow-[-10_7px_20px_rgba(0,0,0,0.25)] w-[343px] h-[504px] px-2.5 ${beginEffect} ${moveToEffect} ${className}`.trimEnd()}
+            className={`bg-white m-auto rounded-[1.25rem] shadow-[-10px_7px_20px_0px_rgba(0,0,0,0.25)] w-[343px] h-[504px] px-2.5 ${beginEffect} ${moveToEffect} ${className}`.trimEnd()}
             onSubmit={exeSubmit}
         >
             <Picture src="src/assets/logo.svg" />
