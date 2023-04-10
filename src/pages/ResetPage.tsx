@@ -18,6 +18,14 @@ const ResetPage: FC = () => {
     const { current: fallDown } = useDynamicStylesEffect('fall-down', 1550, true, chainSoundEffect);
     const { update: rotateForm } = useDynamicStylesEffect('rotate-form', 5000, true, actionSoundEffect);
 
+    const excludesTel: Record<string, boolean> = {
+        '+': true,
+        '-': true,
+        '(': true,
+        ')': true,
+        ' ': true,
+    };
+
     const moveToClick = () => {
         setIsAdd(true);
         setTimeout(() => {
@@ -34,7 +42,7 @@ const ResetPage: FC = () => {
         setIsValid(validate());
         if (isValid) {
             setShowErrorMessage(false);
-            window.open(`tel: ${phone})`);
+            window.open(`tel: ${phone.split('').filter((ch: string) => !excludesTel[ch]).join('')}`);
         }  else {
             setShowErrorMessage(true);
         };  
