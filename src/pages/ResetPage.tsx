@@ -3,33 +3,27 @@ import { FC, useState } from 'react';
 import Page from '../components/Page';
 import Background from '../components/Background';
 import Form from '../components/ui/Form';
-import useBeginEffect from '../hooks/useBeginEffect';
 import Input from '../components/ui/Input';
 import useMoveToEffect from '../hooks/useMoveToEffect';
 import Picture from '../components/ui/Picture';
 
-const LoginPage: FC = () => {
+const ResetPage: FC = () => {
     const [phone, setPhone] = useState(localStorage.getItem('phone')  ?? '+7');
-    const [password, setPassword] = useState(localStorage.getItem('password') ?? '');
     const [showErrorMessage, setShowErrorMessage] = useState(false);
-    const beginEffect = useBeginEffect();
     const moveToEffect = useMoveToEffect('rotate-form', 5000, []);
-
 
     const moveToClick = () => {
         setTimeout(() => {
-           window.location.href = 'reset';
+            window.location.href = 'login';
         }, 3000);
     };
 
     const handleSubmit = () => {
-        localStorage.setItem('password', password);
-        localStorage.setItem( 'login', phone);
     };
 
     const handleClick = () => {
         setIsValid(validate());
-        if (isValid.common) {
+        if (isValid) {
             setShowErrorMessage(false);
         }  else {
             setShowErrorMessage(true);
@@ -57,29 +51,12 @@ const LoginPage: FC = () => {
         if (value.includes('+7')) setPhone(value);
     };
 
-    const passwordFormat = (value: string) => {
-        const capsLetterCheck = /[A-Z]/.test(value);
-        const numberCheck = /[0-9]/.test(value);
-        const pwdLengthCheck = value.length >= 8;
-        const specialCharCheck = /[!@#$%^&*]/.test(value);
-        return capsLetterCheck && numberCheck && pwdLengthCheck && specialCharCheck;
-    };
-
     const validate = () => {
         const phoneIsValid = phone.length === 16;
-        const passwordIsValid = passwordFormat(password);
-        return {
-            phoneIsValid,
-            passwordIsValid,
-            common: passwordIsValid && phoneIsValid 
-        }; 
+        return phoneIsValid; 
     };
     
     const [isValid, setIsValid] = useState(validate());
-
-    const updatePassword = (value: string) => {
-        setPassword(value);
-    };
     
     return (
         <Page>
@@ -87,31 +64,23 @@ const LoginPage: FC = () => {
                 <div className="absolute w-full h-full">
                     <Picture
                         src="src/assets/hook.png"
-                        className={`container w-full h-full m-auto ${beginEffect} ${moveToEffect}`.trimEnd()}
+                        className={`container w-full h-full m-auto ${moveToEffect}`.trimEnd()}
                     />
                 </div>
                 <Form
                     className="relative z-10"
-                    beginEffect={beginEffect ? beginEffect + ' top-[-80px]' : ''}
                     moveToEffect={moveToEffect}
-                    moveToLabel="Забыли пароль?"
+                    moveToLabel="назад"
                     moveToClick={moveToClick}
-                    exeLabel="ВОЙТИ"
-                    exeSubmit={isValid.common ? handleSubmit : undefined}
+                    exeLabel="ПОЗВОНИТЬ"
+                    exeSubmit={isValid ? handleSubmit : undefined}
                     exeClick={handleClick}
                 >
                     <Input
-                        label={`Введите логин ${!showErrorMessage || isValid.phoneIsValid ? '' : 'Ошибка валидации'}`}
+                        label={`Введите номер телефона ${!showErrorMessage || isValid ? '' : 'Ошибка валидации'}`}
                         fnType="tel"
                         onChange={phoneFormat}
                         value={phone}
-                    />
-                    <Input
-                        label={`Введите пароль ${!showErrorMessage || isValid.passwordIsValid ? '' : 'Ошибка валидации'}`}
-                        fnType="password"
-                        className="mt-[19px]"
-                        onChange={updatePassword}
-                        value={password}
                     />
                 </Form>
             </Background>
@@ -119,4 +88,4 @@ const LoginPage: FC = () => {
     );
    };
 
-export default LoginPage;
+export default ResetPage;

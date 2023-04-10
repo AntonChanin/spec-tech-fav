@@ -7,15 +7,14 @@ import Link from './Link';
 
 type Props = {
     className?: string;
-    beginEffect: string;
-    moveToEffect: string;
+    beginEffect?: string;
+    moveToEffect?: string;
     moveToLabel?: string;
     moveToClick?(): void;
     moveToSubmit?(): void;
     exeLabel?: string
     exeClick?(): void;
     exeSubmit?(): void;
-    isRedirectExe?: boolean;
 };
 
 const Form: FC<PropsWithChildren<Props>> = (props) => {
@@ -29,7 +28,6 @@ const Form: FC<PropsWithChildren<Props>> = (props) => {
         exeLabel = '',
         exeClick,
         exeSubmit,
-        isRedirectExe = false,
         children,
     } = props;
 
@@ -49,9 +47,9 @@ const Form: FC<PropsWithChildren<Props>> = (props) => {
                     {moveToLabel}
                 </Button>   
             </Column>
-            {isRedirectExe && exeSubmit
+            {exeSubmit
             ? (
-                <Link href='/home'>
+                <Link href="home">
                     <Button onClick={exeClick} onSubmit={exeSubmit}>{exeLabel}</Button>
                 </Link>
             )
