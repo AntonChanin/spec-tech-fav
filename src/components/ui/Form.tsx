@@ -3,7 +3,6 @@ import { FC, PropsWithChildren } from 'react';
 import Picture from './Picture';
 import Column from './Column';
 import Button from './Button';
-import Link from './Link';
 
 type Props = {
     className?: string;
@@ -11,10 +10,10 @@ type Props = {
     moveToEffect?: string;
     moveToLabel?: string;
     moveToClick?(): void;
-    moveToSubmit?(): void;
     exeLabel?: string
     exeClick?(): void;
     exeSubmit?(): void;
+    redirectTo?: string;
 };
 
 const Form: FC<PropsWithChildren<Props>> = (props) => {
@@ -24,7 +23,6 @@ const Form: FC<PropsWithChildren<Props>> = (props) => {
         moveToEffect,
         moveToLabel = '',
         moveToClick,
-        moveToSubmit,
         exeLabel = '',
         exeClick,
         exeSubmit,
@@ -34,6 +32,7 @@ const Form: FC<PropsWithChildren<Props>> = (props) => {
     return (
         <form
             className={`bg-white m-auto rounded-[1.25rem] shadow-[-10_7px_20px_rgba(0,0,0,0.25)] w-[343px] h-[504px] px-2.5 ${beginEffect} ${moveToEffect} ${className}`.trimEnd()}
+            onSubmit={exeSubmit}
         >
             <Picture src="src/assets/logo.svg" />
             <Column>
@@ -42,19 +41,11 @@ const Form: FC<PropsWithChildren<Props>> = (props) => {
                   type="text"
                   className="w-[128px] h-[22px] rounded-[5px] text-base font-semibold ml-auto mt-2.5 text-end"
                   onClick={moveToClick}
-                  onSubmit={moveToSubmit}
                 >
                     {moveToLabel}
                 </Button>   
             </Column>
-            {exeSubmit
-            ? (
-                <Link href="home">
-                    <Button onClick={exeClick} onSubmit={exeSubmit}>{exeLabel}</Button>
-                </Link>
-            )
-            : <Button onClick={exeClick} onSubmit={exeSubmit}>{exeLabel}</Button>
-            }
+            <Button onClick={exeClick} fnType="submit">{exeLabel}</Button>
         </form>
     );
 }

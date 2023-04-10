@@ -4,27 +4,32 @@ import Page from '../components/Page';
 import Background from '../components/Background';
 import Form from '../components/ui/Form';
 import Input from '../components/ui/Input';
-import useMoveToEffect from '../hooks/useMoveToEffect';
 import Picture from '../components/ui/Picture';
+import useDynamicStylesEffect from '../hooks/useDynamicStylesEffect';;
 
 const ResetPage: FC = () => {
-    const [phone, setPhone] = useState(localStorage.getItem('phone')  ?? '+7');
+    const [phone, setPhone] = useState(localStorage.getItem('login')  ?? '+7');
     const [showErrorMessage, setShowErrorMessage] = useState(false);
-    const moveToEffect = useMoveToEffect('rotate-form', 5000, []);
+    const [isAdd, setIsAdd] = useState(false);
+    const { current: fallDown } = useDynamicStylesEffect('fall-down');
+    const { update: rotateForm } = useDynamicStylesEffect('rotate-form', 5000);
 
     const moveToClick = () => {
+        setIsAdd(true);
         setTimeout(() => {
             window.location.href = 'login';
-        }, 3000);
+        }, 400);
     };
 
     const handleSubmit = () => {
+        localStorage.setItem('password', '');
     };
 
     const handleClick = () => {
         setIsValid(validate());
         if (isValid) {
             setShowErrorMessage(false);
+            window.open(`tel: ${phone})`);
         }  else {
             setShowErrorMessage(true);
         };  
@@ -63,13 +68,14 @@ const ResetPage: FC = () => {
             <Background>
                 <div className="absolute w-full h-full">
                     <Picture
-                        src="src/assets/hook.png"
-                        className={`container w-full h-full m-auto ${moveToEffect}`.trimEnd()}
+                        src="src/assets/hook_pressed.png"
+                        className={`container w-auto h-auto m-auto ${fallDown()} ${rotateForm(isAdd)}`.trimEnd()}
                     />
                 </div>
                 <Form
                     className="relative z-10"
-                    moveToEffect={moveToEffect}
+                    beginEffect={fallDown()}
+                    moveToEffect={rotateForm(isAdd)}
                     moveToLabel="назад"
                     moveToClick={moveToClick}
                     exeLabel="ПОЗВОНИТЬ"

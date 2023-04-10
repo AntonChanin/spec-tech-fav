@@ -8,7 +8,7 @@ import Button from '../components/ui/Button';
 const HomePage: FC = () => {
    return (
         <Page>
-            <Link href='/'>
+            <Link href='login'>
                 <Button>ВЫХОД</Button>
             </Link>
         </Page>

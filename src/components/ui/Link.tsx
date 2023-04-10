@@ -1,16 +1,18 @@
-import { FC, MouseEventHandler, PropsWithChildren } from 'react';
+import { FC, FormEventHandler, MouseEventHandler, PropsWithChildren } from 'react';
 
 type Props = {
     href?: string;
     label?: string;
     className?: string;
+    onClick?(): void;
 };
 
 const Link: FC<PropsWithChildren<Props>> = (props) => {
-    const { href = '/', label = '', className = '', children } = props;
+    const { href = '/', label = '', className = '', onClick, children } = props;
 
     const handleClick: MouseEventHandler<HTMLAnchorElement> = (e) => {
         e.preventDefault();
+        onClick?.();
         window.location.href = href;
     };
 

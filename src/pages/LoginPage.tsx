@@ -3,37 +3,40 @@ import { FC, useState } from 'react';
 import Page from '../components/Page';
 import Background from '../components/Background';
 import Form from '../components/ui/Form';
-import useBeginEffect from '../hooks/useBeginEffect';
 import Input from '../components/ui/Input';
-import useMoveToEffect from '../hooks/useMoveToEffect';
 import Picture from '../components/ui/Picture';
+import useDynamicStylesEffect from '../hooks/useDynamicStylesEffect';
 
 const LoginPage: FC = () => {
-    const [phone, setPhone] = useState(localStorage.getItem('phone')  ?? '+7');
+    localStorage.setItem('target_login', '+7(111)111-11-11');
+    localStorage.setItem('taget_password', '123456');
+    const targetLogin = localStorage.getItem('target_login');
+    const targetPassword = localStorage.getItem('taget_password');
+
+    const [phone, setPhone] = useState(localStorage.getItem('login')  ?? '+7');
     const [password, setPassword] = useState(localStorage.getItem('password') ?? '');
     const [showErrorMessage, setShowErrorMessage] = useState(false);
-    const beginEffect = useBeginEffect();
-    const moveToEffect = useMoveToEffect('rotate-form', 5000, []);
-
+    const [isAdd, setIsAdd] = useState(false);
+    const { current: fallDown } = useDynamicStylesEffect('fall-down');
+    const { update: rotateForm } = useDynamicStylesEffect('rotate-form', 5000);
 
     const moveToClick = () => {
+        setIsAdd(true);
         setTimeout(() => {
-           window.location.href = 'reset';
-        }, 3000);
-    };
-
-    const handleSubmit = () => {
-        localStorage.setItem('password', password);
-        localStorage.setItem( 'login', phone);
+            window.location.href = 'reset';
+        }, 400)
     };
 
     const handleClick = () => {
         setIsValid(validate());
-        if (isValid.common) {
+        if (isValid.common && isValid.truthLogin && isValid.truthPassword) {
             setShowErrorMessage(false);
+            localStorage.setItem('password', password);
+            localStorage.setItem( 'login', phone);
+            window.location.href = '/';
         }  else {
             setShowErrorMessage(true);
-        };  
+        };
     };
 
     const phoneFormat = (value: string | string[]) => {
@@ -60,9 +63,9 @@ const LoginPage: FC = () => {
     const passwordFormat = (value: string) => {
         const capsLetterCheck = /[A-Z]/.test(value);
         const numberCheck = /[0-9]/.test(value);
-        const pwdLengthCheck = value.length >= 8;
+        const pwdLengthCheck = value.length >= 6;
         const specialCharCheck = /[!@#$%^&*]/.test(value);
-        return capsLetterCheck && numberCheck && pwdLengthCheck && specialCharCheck;
+        return pwdLengthCheck;
     };
 
     const validate = () => {
@@ -71,7 +74,9 @@ const LoginPage: FC = () => {
         return {
             phoneIsValid,
             passwordIsValid,
-            common: passwordIsValid && phoneIsValid 
+            common: passwordIsValid && phoneIsValid,
+            truthLogin: targetLogin === phone,
+            truthPassword: targetPassword === password
         }; 
     };
     
@@ -86,28 +91,27 @@ const LoginPage: FC = () => {
             <Background>
                 <div className="absolute w-full h-full">
                     <Picture
-                        src="src/assets/hook.png"
-                        className={`container w-full h-full m-auto ${beginEffect} ${moveToEffect}`.trimEnd()}
+                        src="src/assets/hook_pressed.png"
+                        className={`container w-auto h-auto m-auto ${fallDown()} ${rotateForm(isAdd)}`.trimEnd()}
                     />
                 </div>
                 <Form
                     className="relative z-10"
-                    beginEffect={beginEffect ? beginEffect + ' top-[-80px]' : ''}
-                    moveToEffect={moveToEffect}
+                    beginEffect={fallDown()}
+                    moveToEffect={rotateForm(isAdd)}
                     moveToLabel="Забыли пароль?"
                     moveToClick={moveToClick}
                     exeLabel="ВОЙТИ"
-                    exeSubmit={isValid.common ? handleSubmit : undefined}
                     exeClick={handleClick}
                 >
                     <Input
-                        label={`Введите логин ${!showErrorMessage || isValid.phoneIsValid ? '' : 'Ошибка валидации'}`}
+                        label={`Введите логин ${!showErrorMessage || isValid.phoneIsValid ? (isValid.truthLogin ? '' : 'Неверный логин') : 'Ошибка валидации'}`}
                         fnType="tel"
                         onChange={phoneFormat}
                         value={phone}
                     />
                     <Input
-                        label={`Введите пароль ${!showErrorMessage || isValid.passwordIsValid ? '' : 'Ошибка валидации'}`}
+                        label={`Введите пароль ${!showErrorMessage || isValid.passwordIsValid ? (isValid.truthPassword ? '' : 'Неверный пароль') : 'Ошибка валидации'}`}
                         fnType="password"
                         className="mt-[19px]"
                         onChange={updatePassword}
