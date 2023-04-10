@@ -4,7 +4,7 @@
 yarn
 ```
 
-next
+next step:
 
 ```
 yarn dev
