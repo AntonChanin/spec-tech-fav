@@ -1,6 +1,11 @@
 ## How start?
 
 ```
+git checkout develop
+```
+next
+
+```
 yarn
 ```
 
